@@ -1,4 +1,4 @@
-namespace WorkingWithEFCore.Data
+namespace DataLibrary.Models
 {
     public class WeatherForecast
     {
