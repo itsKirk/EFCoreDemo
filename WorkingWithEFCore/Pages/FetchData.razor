@@ -3,14 +3,14 @@
 <PageTitle>Weather forecast</PageTitle>
 
 @using DataLibrary.Models
+@using System.Text.Json
 @using WorkingWithEFCore.Data
-@inject WeatherForecastService ForecastService
+@inject IWeatherForecastService ForecastService
+@inject HttpClient Http
 
-<h1>Weather forecast</h1>
+<h1>@forecast.Date.ToString("dd-MMM-yyyy") Weather Forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
-
-@if (forecasts == null)
+@if (forecast == null)
 {
     <p><em>Loading...</em></p>
 }
@@ -19,31 +19,41 @@ else
     <table class="table">
         <thead>
             <tr>
-                <th>Date</th>
+                <th>Time</th>
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
+            <tr>
+                <td>@forecast.Time.ToString("hh:mm:ss:f")</td>
+                <td>@forecast.TemperatureC</td>
+                <td>@forecast.TemperatureF</td>
+                <td>@forecast.Summary</td>
+            </tr>
+
         </tbody>
     </table>
 }
-
+<div class="container">
+    <div class="row">
+        <div class="col text-right">
+            <button class="btn-primary border-danger" @onclick="SaveWeather">
+                Save Weather Data
+            </button>
+        </div>
+    </div>
+</div>
 @code {
-    private WeatherForecast[] forecasts;
+    private WeatherForecast forecast;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        forecast = ForecastService.GetForecast(DateTime.Now);
+    }
+    private void SaveWeather()
+    {
+        Http.PostAsJsonAsync<WeatherForecast>("weatherforecasts", forecast);
     }
 }
