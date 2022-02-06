@@ -4,6 +4,7 @@ namespace DataLibrary.Models
     {
         public int Id { get; set; }
         public DateTime Date { get; set; }
+        public DateTime Time { get; set; }
 
         public int TemperatureC { get; set; }
 
