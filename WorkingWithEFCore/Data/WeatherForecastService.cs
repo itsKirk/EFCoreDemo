@@ -1,3 +1,5 @@
+using DataLibrary.Models;
+
 namespace WorkingWithEFCore.Data
 {
     public class WeatherForecastService

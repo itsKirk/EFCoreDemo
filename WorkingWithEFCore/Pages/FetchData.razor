@@ -2,6 +2,7 @@
 
 <PageTitle>Weather forecast</PageTitle>
 
+@using DataLibrary.Models
 @using WorkingWithEFCore.Data
 @inject WeatherForecastService ForecastService
 
@@ -39,7 +40,7 @@ else
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync()
     {
